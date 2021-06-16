@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+
+{% block title %}Destinations{% endblock %}
+
+{% block body %}
+
+    <div class="bg-light p-3 mt-5">
+        <h1>Destinations</h1>
+    </div>
+
+    <div class="row mb-5">
+        {% for destination in destinations %}
+            <div class="col-4 mt-4">
+                <div class="border border-dark rounded p-2 clearfix">
+                    <h2>
+                        <a style="color:#333;"
+                           href="{{ path('destination_detail', {id: destination.id}) }}"> {{ destination.name }}</a>
+
+                    </h2>
+                    {% if destination.filename %}
+                        <a style="color:#333;" href="{{ path('destination_detail', {id: destination.id}) }}"> <img
+                                    href="{{ path('destination_detail', {id: destination.id}) }}"
+                                    src="images/destinations/{{ destination.filename }}"
+                                    alt="card-img-top" class="img-fluid rounded"></a>
+                    {% else %}
+                        <a href="{{ path('destination_detail', {id: destination.id}) }}"> <img
+                                    src="{{ '/images/empty.png' }}"
+                                    alt="card-img-top"
+                                    class="img-fluid rounded"></a>
+
+
+                    {% endif %}
+
+                    <hr>
+                    <a href="{{ path('destination_detail',{'id': destination.id}) }}"
+                       class="btn btn-warning text-light float-right">
+                        Consulter
+                        <i class="fas fa-arrow-alt-circle-right mr-1"></i>
+                    </a>
+
+
+                </div>
+
+            </div>
+        {% endfor %}
+    </div>
+    <div class="row mt-5">
+
+    </div>
+{% endblock %}

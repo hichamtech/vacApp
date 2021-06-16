@@ -1,0 +1,91 @@
+<div class="col-md-12">
+    <div class="offer-dedicated-body-left">
+        <div class="tab-content" id="pills-tabContent">
+            <div class="tab-pane fade active show" id="pills-reviews" role="tabpanel"
+                 aria-labelledby="pills-reviews-tab">
+                <div id="ratings-and-reviews"
+                     class="bg-white rounded shadow-sm p-4 mb-4 clearfix restaurant-detailed-star-rating">
+                    <span class="star-rating float-right">
+                             {% for rate in rates %}
+                                 <a href="{{ path('rated', {ratingId: rate.id,destinationId: destination.id}) }}"> <i data-rating="{{ rate.start}}" class="rating__star far fa-star"></i></a>
+                             {% endfor %}
+                    </span>
+
+                    <h5 class="mb-0 pt-1">Rate this Destination</h5>
+                </div>
+                <div class="bg-white rounded shadow-sm p-4 mb-4 clearfix graph-star-rating">
+                    <h5 class="mb-0 mb-4">Ratings and Reviews</h5>
+                    <div class="graph-star-rating-header">
+                        <div class="star-rating">
+                            <a href="#"><i class="icofont-ui-rating active"></i></a>
+                            <a href="#"><i class="icofont-ui-rating active"></i></a>
+                            <a href="#"><i class="icofont-ui-rating active"></i></a>
+                            <a href="#"><i class="icofont-ui-rating active"></i></a>
+                            <a href="#"><i class="icofont-ui-rating"></i></a> <b class="text-black ml-2">{{ destination.rating.count }}</b>
+                        </div>
+
+                    </div>
+
+
+                </div>
+                <div class="bg-white rounded shadow-sm p-4 mb-4 restaurant-detailed-ratings-and-reviews">
+                    <a href="#" class="btn btn-outline-primary btn-sm float-right">Top Rated</a>
+                    <h5 class="mb-1">All Ratings and Reviews</h5>
+                    {% for review in reviewsList %}
+                        <div class="reviews-members pt-4 pb-4">
+                            <div class="media">
+                                <a href="#"><img alt="Generic placeholder image"
+                                                 src="http://bootdey.com/img/Content/avatar/avatar1.png"
+                                                 class="mr-3 rounded-pill"></a>
+                                <div class="media-body">
+                                    <div class="reviews-members-header">
+                                        <h6 class="mb-1"><a class="text-black" href="#">{{ review.reviewer }}</a></h6>
+                                        <p class="text-gray">{{ review.createdAt ? review.createdAt|date('Y-m-d') : '' }}</p>
+                                    </div>
+                                    <div class="reviews-members-body">
+                                        <p>{{ review.content }} </p>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    <hr>
+
+                    <hr>
+                </div>
+                <div class="bg-white rounded shadow-sm p-4 mb-5 rating-review-select-page">
+                    <h5 class="mb-4">Leave Comment</h5>
+                    <p class="mb-2">Rate the Destination</p>
+                    <div class="mb-4">
+                        <div class="rating">
+                            {% for rate in rates %}
+                                <a href="{{ path('rated', {ratingId: rate.id,destinationId: destination.id}) }}"> <i data-rating="{{ rate.start}}" class="rating__star far fa-star"></i></a>
+                            {% endfor %}
+                        </div>
+
+                    </div>
+                    {% if app.user %}
+                        {{ form_start(form) }}
+                        <div class="form-group">
+                            <label>Your Comment</label>
+                            {{ form_row(form.content) }}
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-primary btn-sm" type="submit"> Submit Comment</button>
+                        </div>
+                        {{ form_end(form) }}
+                    {% else %}
+
+                        <div class="form-group">
+                            <button class="btn btn-primary btn-sm" type="submit" disabled> Submit Comment</button>
+                        </div>
+                        <div class="row">
+                            <a href="{{ path('app_login') }}">Please sign in to submit a comment</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

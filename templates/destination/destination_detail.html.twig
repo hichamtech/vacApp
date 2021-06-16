@@ -1,0 +1,99 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Destination{% endblock %}
+
+{% block body %}
+
+    <div class="card">
+        <div class="container-fliud">
+            <div class="wrapper row">
+                <div class="preview col-md-6">
+
+                    <div class="preview-pic tab-content">
+                        {% if destination.filename %}
+                            <div class="tab-pane active" id="pic-1">
+                                <img src="{{ '/images/destinations/' }}{{ destination.filename }}" class="img-responsive" alt="img">
+                            </div>
+                        {% else %}
+                            <div class="tab-pane active" id="pic-1">
+                                <img src="{{ '/images/empty.png' }}"  alt="img">
+                            </div>
+                        {% endif %}
+
+                    </div>
+                    <ul class="preview-thumbnail nav nav-tabs">
+                      {% if destination.filename %}
+                            <li class="active"><a data-target="#pic-1" data-toggle="tab"><img src="{{ '/images/destinations/' }}{{ destination.filename }}" class="img-responsive" alt="img"></a></li>
+                        {% else %}
+                            <li class="active"><a data-target="#pic-1" data-toggle="tab"><img src="{{ '/images/empty.png' }}"   alt="img"/></a></li>
+
+                        {% endif %}
+
+                    </ul>
+
+                </div>
+                <div class="details col-md-6">
+                    <h3 class="product-title">{{ destination.name }}</h3>
+                    <h4 class="price">Pays <span>{{ destination.country }}
+						</span></h4>
+
+                    <div class="rating">
+                        {% for rate in rates %}
+                        <a href="{{ path('rated', {ratingId: rate.id,destinationId:destination.id }) }}"> <i data-rating="{{ rate.start}}" class="rating__star far fa-star"></i></a>
+                       {% endfor %}
+                    </div>
+
+                    <p class="product-description">{{ destination.description }}</p>
+                    <h5 class="price" >Type <span>{{ destination.type }}
+						</span></h5>
+                    <h6 class="price" >Monument <span>{{ destination.monument }}
+						</span></h6>
+
+                    <div class="action">
+                        <a  href="{{ path('visited', {id: destination.id}) }}" class="add-to-cart btn btn-default" type="button"><i class="fas fa-map-marked-alt mr-1"></i>Visited</a>
+                    </div>
+                    {% for message in app.flashes('success')  %}
+                        <div class="alert alert-success mt-2">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+<div class="row mt-5 mb-5">
+        {% include  'destination/comment_section.html.twig'  %}
+</div>
+<script>
+    const ratingStars = [...document.getElementsByClassName("rating__star")];
+    const ratingResult = document.querySelector(".rating__result");
+
+    printRatingResult(ratingResult);
+
+    function executeRating(stars, result) {
+        const starClassActive = "rating__star fas fa-star";
+        const starClassUnactive = "rating__star far fa-star";
+        const starsLength = stars.length;
+        let i;
+        stars.map((star) => {
+            star.onclick = () => {
+                i = stars.indexOf(star);
+
+                if (star.className.indexOf(starClassUnactive) !== -1) {
+                    printRatingResult(result, i + 1);
+                    for (i; i >= 0; --i) stars[i].className = starClassActive;
+                } else {
+                    printRatingResult(result, i);
+                    for (i; i < starsLength; ++i) stars[i].className = starClassUnactive;
+                }
+            };
+        });
+    }
+
+    function printRatingResult(result, num = 0) {
+        result.textContent = `${num}/5`;
+    }
+
+    executeRating(ratingStars, ratingResult);
+</script>
+{% endblock %}
